@@ -9,3 +9,7 @@ variable "location" {
 variable "location_short" {
   type = string
 }
+
+variable "hub_storage_id" {
+  type = string
+}

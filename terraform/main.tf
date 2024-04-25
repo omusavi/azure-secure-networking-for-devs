@@ -11,17 +11,12 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "hub" {
-  name     = "rg-${var.team_name}-dev-hub"
-  location = var.hub_location
-}
 
-resource "azurerm_storage_account" "hub" {
-  name                     = "st${var.team_name}devhub"
-  resource_group_name      = azurerm_resource_group.hub.name
-  location                 = azurerm_resource_group.hub.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+
+module "hub" {
+  source    = "./modules/hub"
+  team_name = var.team_name
+  location  = var.hub_location
 }
 
 module "spoke1" {
@@ -29,7 +24,7 @@ module "spoke1" {
   team_name      = var.team_name
   location       = var.location1
   location_short = var.location1_short
-  hub_storage_id = azurerm_storage_account.hub.id
+  hub_storage_id = module.hub.storage_id
 }
 
 module "spoke2" {
@@ -37,5 +32,5 @@ module "spoke2" {
   team_name      = var.team_name
   location       = var.location2
   location_short = var.location2_short
-  hub_storage_id = azurerm_storage_account.hub.id
+  hub_storage_id = module.hub.storage_id
 }

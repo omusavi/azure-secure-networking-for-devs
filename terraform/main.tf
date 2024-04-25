@@ -24,6 +24,13 @@ resource "azurerm_storage_account" "hub" {
   account_replication_type = "LRS"
 }
 
+resource "azurerm_virtual_network" "hub" {
+  name                = "vnet-${var.team_name}-dev-hub"
+  location            = azurerm_resource_group.hub.location
+  resource_group_name = azurerm_resource_group.hub.name
+  address_space       = ["10.0.0.0/22"]
+}
+
 module "spoke1" {
   source         = "./modules/spoke"
   team_name      = var.team_name

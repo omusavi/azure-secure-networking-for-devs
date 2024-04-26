@@ -19,6 +19,10 @@ resource "azurerm_windows_virtual_machine" "jumpbox" {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 resource "azurerm_network_interface" "jumpbox" {

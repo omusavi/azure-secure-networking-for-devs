@@ -3,18 +3,10 @@ variable "team_name" {
 }
 
 
-variable "spoke1" {
-  type = object({
+variable "spokes" {
+  type = map(object({
     resource_group_name = string
     location            = string
     location_short      = string
-  })
-}
-
-variable "spoke2" {
-  type = object({
-    resource_group_name = string
-    location            = string
-    location_short      = string
-  })
+  }))
 }

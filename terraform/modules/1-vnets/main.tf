@@ -1,13 +1,10 @@
-resource "azurerm_virtual_network" "spoke1" {
-  name                = "vnet-${var.team_name}-dev-${var.spoke1.location_short}"
-  location            = var.spoke1.location
-  resource_group_name = var.spoke1.resource_group_name
-  address_space       = ["10.0.4.0/22"]
-}
+resource "azurerm_virtual_network" "spokes" {
+  for_each = { for i, v in values(var.spokes) : v.location_short => merge({
+    address_space = "10.0.${(i + 1) * 4}.0/22"
+  }, v) }
 
-resource "azurerm_virtual_network" "spoke2" {
-  name                = "vnet-${var.team_name}-dev-${var.spoke2.location_short}"
-  location            = var.spoke2.location
-  resource_group_name = var.spoke2.resource_group_name
-  address_space       = ["10.0.8.0/22"]
+  name                = "vnet-${var.team_name}-dev-${each.key}"
+  location            = each.value.location
+  resource_group_name = each.value.resource_group_name
+  address_space       = [each.value.address_space]
 }

@@ -28,25 +28,18 @@ module "hub" {
   location  = var.hub_location
 }
 
-module "spoke1" {
-  source         = "./modules/spoke"
-  team_name      = var.team_name
-  location       = local.spoke1.location
-  location_short = local.spoke1.short
-  hub_storage_id = module.hub.storage_id
-}
+module "spokes" {
+  for_each = var.locations
 
-module "spoke2" {
   source         = "./modules/spoke"
   team_name      = var.team_name
-  location       = local.spoke2.location
-  location_short = local.spoke2.short
+  location       = each.value
+  location_short = each.key
   hub_storage_id = module.hub.storage_id
 }
 
 module "vnets" {
   source    = "./modules/1-vnets"
   team_name = var.team_name
-  spoke1    = module.spoke1
-  spoke2    = module.spoke2
+  spokes    = module.spokes
 }

@@ -28,13 +28,12 @@ resource "azurerm_linux_web_app" "spoke" {
     application_stack {
       python_version = "3.9"
     }
+    always_on = false
   }
 
   identity {
     type = "SystemAssigned"
   }
-
-
 }
 
 # This is a workaround for zip_deploy_file not authorized error. 

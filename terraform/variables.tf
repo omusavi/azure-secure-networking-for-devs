@@ -6,24 +6,14 @@ variable "team_name" {
   }
 }
 
-variable "location1" {
-  type    = string
-  default = "westeurope"
-}
 
-variable "location1_short" {
-  type    = string
-  default = "eu"
-}
-
-variable "location2" {
-  type    = string
-  default = "eastus"
-}
-
-variable "location2_short" {
-  type    = string
-  default = "us"
+variable "locations" {
+  description = "Map of locations where the key is the 'short' name and the value is the Azure region"
+  type        = map(string)
+  default = {
+    eu = "westeurope"
+    us = "eastus"
+  }
 }
 
 variable "hub_location" {

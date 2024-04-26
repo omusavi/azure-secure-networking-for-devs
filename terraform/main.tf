@@ -19,18 +19,12 @@ module "hub" {
   location  = var.hub_location
 }
 
-module "spoke1" {
-  source         = "./modules/spoke"
-  team_name      = var.team_name
-  location       = var.location1
-  location_short = var.location1_short
-  hub_storage_id = module.hub.storage_id
-}
+module "spokes" {
+  for_each = var.locations
 
-module "spoke2" {
   source         = "./modules/spoke"
   team_name      = var.team_name
-  location       = var.location2
-  location_short = var.location2_short
+  location       = each.value
+  location_short = each.key
   hub_storage_id = module.hub.storage_id
 }
